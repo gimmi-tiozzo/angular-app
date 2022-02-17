@@ -1,9 +1,9 @@
-<app-header></app-header>
+<app-header (subViewEnabled)="subViewType = $event"></app-header>
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <app-recipes></app-recipes>
-      <app-shopping-list></app-shopping-list>
+      <app-recipes *ngIf="subViewType == SubViewTypeEnum.Recipies"></app-recipes>
+      <app-shopping-list *ngIf="subViewType == SubViewTypeEnum.ShoppingList"></app-shopping-list>
     </div>
   </div>
 </div>
