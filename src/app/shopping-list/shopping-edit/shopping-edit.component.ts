@@ -1,5 +1,5 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { Ingredient } from 'src/app/shared/ingredient.model';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ShoppingListService } from '../shopping-list.service';
 
 /**
  * Componente per l'editing degli ingredienti di una ricetta
@@ -10,18 +10,6 @@ import { Ingredient } from 'src/app/shared/ingredient.model';
   styleUrls: ['./shopping-edit.component.css'],
 })
 export class ShoppingEditComponent implements OnInit {
-  /**
-   * Evento aggiunta ingrediente
-   */
-  @Output()
-  onIngredientAdded: EventEmitter<Ingredient>;
-
-  /**
-   * Evento eliminazione ingrediente
-   */
-  @Output()
-  onIngredientDeleted: EventEmitter<Ingredient>;
-
   /**
    * Input nome ingrediente
    */
@@ -37,10 +25,7 @@ export class ShoppingEditComponent implements OnInit {
   /**
    * Costruttore
    */
-  constructor() {
-    this.onIngredientAdded = new EventEmitter<Ingredient>();
-    this.onIngredientDeleted = new EventEmitter<Ingredient>();
-  }
+  constructor(private shoppingListService: ShoppingListService) {}
 
   /**
    * Hook init component
@@ -51,14 +36,14 @@ export class ShoppingEditComponent implements OnInit {
    * Aggiunta ingrediente
    */
   onAdd() {
-    this.onIngredientAdded.emit({ name: this.nameInput.nativeElement.value, amount: +this.amountInput.nativeElement.value });
+    this.shoppingListService.addIngredient({ name: this.nameInput.nativeElement.value, amount: +this.amountInput.nativeElement.value });
   }
 
   /**
    * Eliminazione ingrediente
    */
   onDelete() {
-    this.onIngredientDeleted.emit({ name: this.nameInput.nativeElement.value, amount: +this.amountInput.nativeElement.value });
+    this.shoppingListService.removeIngredient({ name: this.nameInput.nativeElement.value, amount: +this.amountInput.nativeElement.value });
   }
 
   /**

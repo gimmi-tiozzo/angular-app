@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
+import { ShoppingListService } from './shopping-list.service';
 
 /**
  * Componente per la lista degli ingredienti
@@ -18,19 +19,13 @@ export class ShoppingListComponent implements OnInit {
   /**
    * Costruttore
    */
-  constructor() {}
+  constructor(private shoppingListService: ShoppingListService) {}
 
   /**
    * Hook init componente
    */
-  ngOnInit(): void {}
-
-  /**
-   * Evento rimozione ingrediente
-   */
-  onDeleted(ingredient: Ingredient) {
-    if (this.ingredients) {
-      this.ingredients = this.ingredients.filter((i) => i.name !== ingredient.name);
-    }
+  ngOnInit(): void {
+    this.ingredients = this.shoppingListService.getIngredients();
+    this.shoppingListService.ingredientsChanged.subscribe((ing) => (this.ingredients = ing));
   }
 }

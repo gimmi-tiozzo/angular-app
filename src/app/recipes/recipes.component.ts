@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Recipe } from './recipe.model';
+import { RecipeService } from './recipe.service';
 
 /**
  * Componente root per le ricette
@@ -8,6 +9,7 @@ import { Recipe } from './recipe.model';
   selector: 'app-recipes',
   templateUrl: './recipes.component.html',
   styleUrls: ['./recipes.component.css'],
+  providers: [RecipeService],
 })
 export class RecipesComponent implements OnInit {
   /**
@@ -18,18 +20,12 @@ export class RecipesComponent implements OnInit {
   /**
    * Costruttore
    */
-  constructor() {}
+  constructor(private recipeService: RecipeService) {
+    this.recipeService.recipeSelected.subscribe((recipe) => (this.recipeSelected = recipe));
+  }
 
   /**
    * Hook init componente
    */
   ngOnInit(): void {}
-
-  /**
-   * Evento selezione ricetta
-   * @param recipe Ricetta
-   */
-  onSelect(recipe: Recipe) {
-    this.recipeSelected = recipe;
-  }
 }
