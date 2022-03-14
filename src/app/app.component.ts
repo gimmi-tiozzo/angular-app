@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SubViewType } from './shared/subview-type.enum';
 
 /**
  * Root component
@@ -16,19 +15,7 @@ export class AppComponent {
   title = 'angular-app';
 
   /**
-   * Tipo di sottovista scelta dal componente header
-   */
-  subViewType: SubViewType;
-
-  /**
-   * Enum scelta sottovista
-   */
-  SubViewTypeEnum = SubViewType;
-
-  /**
    * Costruttore di default
    */
-  constructor() {
-    this.subViewType = SubViewType.Recipies;
-  }
+  constructor() {}
 }
