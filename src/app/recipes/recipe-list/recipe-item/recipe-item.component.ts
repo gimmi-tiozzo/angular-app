@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Recipe } from '../../recipe.model';
 import { RecipeService } from '../../recipe.service';
+import { Router } from '@angular/router';
 
 /**
  * Item che rappresenta una ricetta
@@ -18,9 +19,17 @@ export class RecipeItemComponent implements OnInit {
   recipe: Recipe;
 
   /**
-   * Costruttore
+   * Indice ricetta
    */
-  constructor(private recipeService: RecipeService) {}
+  @Input()
+  index: number;
+
+  /**
+   * Costruttore
+   * @param recipeService servizio per la gestione delle ricetta
+   * @param router router
+   */
+  constructor(private recipeService: RecipeService, private router: Router) {}
 
   /**
    * Hook initi componente
@@ -30,7 +39,7 @@ export class RecipeItemComponent implements OnInit {
   /**
    * Evento selezione ricetta
    */
-  onSelect() {
-    this.recipeService.recipeSelected.emit(this.recipe);
-  }
+  // onSelect() {
+  //   this.router.navigate(['/recipes', this.recipe.id]);
+  // }
 }

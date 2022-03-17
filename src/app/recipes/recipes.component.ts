@@ -20,9 +20,7 @@ export class RecipesComponent implements OnInit {
   /**
    * Costruttore
    */
-  constructor(private recipeService: RecipeService) {
-    this.recipeService.recipeSelected.subscribe((recipe) => (this.recipeSelected = recipe));
-  }
+  constructor() {}
 
   /**
    * Hook init componente

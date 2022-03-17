@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 /**
  * Dettaglio ricetta
@@ -14,20 +15,34 @@ export class RecipeDetailComponent implements OnInit {
   /**
    * Ricetta
    */
-  @Input()
   recipe: Recipe;
 
   /**
    * Costrtuttore
+   * @param recipeService servizio per la gestione delle ricetta
+   * @param route router
+   * @param activedRoute route attiva
    */
-  constructor(private recipeService: RecipeService) {}
+  constructor(private recipeService: RecipeService, private route: Router, private activedRoute: ActivatedRoute) {}
 
   /**
    * Hook init componente
    */
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    //this.recipe = this.recipeService.getRecipeById(+this.activedRoute.snapshot.params['id']);
+    this.activedRoute.params.subscribe((params) => {
+      this.recipe = this.recipeService.getRecipeById(+params['id']);
+    });
+  }
 
   toShoppingList() {
     this.recipeService.addIngredientToShoppingList(this.recipe.ingredients);
+  }
+
+  /**
+   * Edit di una ricetta
+   */
+  public onEditRecipe() {
+    this.route.navigate(['edit'], { relativeTo: this.activedRoute });
   }
 }

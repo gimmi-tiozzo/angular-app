@@ -5,6 +5,10 @@ import { Ingredient } from '../shared/ingredient.model';
  */
 export class Recipe {
   /**
+   * Id ricetta
+   */
+  public id: number;
+  /**
    * Nome ricetta
    */
   public name: string;
@@ -23,12 +27,14 @@ export class Recipe {
 
   /**
    * Costruttore di default
+   * @param id id ricetta
    * @param name Nome ricetta
    * @param desc Descrizione ricetta
    * @param imagePath url immagine
    * @param ingredients Ingredienti ricetta
    */
-  constructor(name: string, desc: string, imagePath: string, ingredients: Ingredient[]) {
+  constructor(id: number, name: string, desc: string, imagePath: string, ingredients: Ingredient[]) {
+    this.id = id;
     this.name = name;
     this.description = desc;
     this.imagePath = imagePath;

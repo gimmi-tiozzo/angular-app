@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 /**
  * Conponente Lista ricette
@@ -18,13 +19,23 @@ export class RecipeListComponent implements OnInit {
 
   /**
    * Costruttore
+   * @param recipeService servizio ricette
+   * @param route router
    */
-  constructor(private recipeService: RecipeService) {}
+  constructor(private recipeService: RecipeService, private route: Router, private activatedRoute: ActivatedRoute) {}
 
   /**
    * Hook init componente
    */
   ngOnInit(): void {
     this.recipes = this.recipeService.getRecipies();
+  }
+
+  /**
+   * Indirizza al componente per creare una nuova ricetta
+   */
+  public onNewRecipe(): void {
+    this.route.navigate(['new'], { relativeTo: this.activatedRoute });
+    console.log('dd');
   }
 }

@@ -1,7 +1,10 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { RecipesComponent } from './recipes/recipes.component';
+import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
+import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
+import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 
 /**
  * Regole do routin per l'indirizzamento dei componenti
@@ -10,6 +13,26 @@ const routeRules: Routes = [
   {
     path: 'recipes',
     component: RecipesComponent,
+    children: [
+      {
+        path: '',
+        component: RecipeStartComponent,
+      },
+      {
+        path: 'new',
+        component: RecipeEditComponent,
+        data: { editMode: false },
+      },
+      {
+        path: ':id',
+        component: RecipeDetailComponent,
+      },
+      {
+        path: ':id/edit',
+        component: RecipeEditComponent,
+        data: { editMode: true },
+      },
+    ],
   },
   {
     path: 'shopping-list',
