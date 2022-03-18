@@ -1,5 +1,6 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
+import { Subject } from 'rxjs';
 
 /**
  * Servizio per la gestione dell'area shopping
@@ -7,9 +8,9 @@ import { Ingredient } from '../shared/ingredient.model';
 @Injectable()
 export class ShoppingListService {
   /**
-   * Evento modifica ingredienti
+   * Evento modifica ingredienti (in alternativa ad EventEmitter<>)
    */
-  ingredientsChanged: EventEmitter<Ingredient[]>;
+  ingredientsChanged: Subject<Ingredient[]>;
 
   /**
    * Lista degli ingredienti
@@ -20,7 +21,7 @@ export class ShoppingListService {
    * Costruttore
    */
   constructor() {
-    this.ingredientsChanged = new EventEmitter<Ingredient[]>();
+    this.ingredientsChanged = new Subject<Ingredient[]>();
   }
 
   /**
@@ -37,7 +38,7 @@ export class ShoppingListService {
    */
   public addIngredient(ingredient: Ingredient): void {
     this.ingredients.push(ingredient);
-    this.ingredientsChanged.emit(this.getIngredients());
+    this.ingredientsChanged.next(this.getIngredients());
   }
 
   /**
@@ -50,7 +51,7 @@ export class ShoppingListService {
 
       if (index > -1) {
         this.ingredients.splice(index, 1);
-        this.ingredientsChanged.emit(this.getIngredients());
+        this.ingredientsChanged.next(this.getIngredients());
       }
     }
   }
@@ -61,6 +62,6 @@ export class ShoppingListService {
    */
   public addIngredients(ingredients: Ingredient[]): void {
     this.ingredients.push(...ingredients);
-    this.ingredientsChanged.emit(this.getIngredients());
+    this.ingredientsChanged.next(this.getIngredients());
   }
 }
