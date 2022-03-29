@@ -13,6 +13,11 @@ export class ShoppingListService {
   ingredientsChanged: Subject<Ingredient[]>;
 
   /**
+   * Evento editing ingrediente con indicazione dell'indice dell'ingrediente nella lista ingredienti
+   */
+  startedEditing: Subject<number>;
+
+  /**
    * Lista degli ingredienti
    */
   private ingredients: Ingredient[] = [];
@@ -22,6 +27,7 @@ export class ShoppingListService {
    */
   constructor() {
     this.ingredientsChanged = new Subject<Ingredient[]>();
+    this.startedEditing = new Subject<number>();
   }
 
   /**
@@ -30,6 +36,25 @@ export class ShoppingListService {
    */
   public getIngredients(): Ingredient[] {
     return this.ingredients.slice();
+  }
+
+  /**
+   * Ottien un ingrediente alla posizione index
+   * @param index indice ingrediente in array ingredienti
+   * @returns Ingrediente alla posizione index
+   */
+  public getIngredientByIndex(index: number): Ingredient {
+    return this.ingredients[index];
+  }
+
+  /**
+   * Aggiorna ingrediente
+   * @param index indice ingrediente
+   * @param newIngredient Nuovo ingrediente
+   */
+  public updateIngredientByIndex(index: number, newIngredient: Ingredient): void {
+    this.ingredients[index] = newIngredient;
+    this.ingredientsChanged.next(this.getIngredients());
   }
 
   /**

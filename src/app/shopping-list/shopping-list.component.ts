@@ -28,4 +28,12 @@ export class ShoppingListComponent implements OnInit {
     this.ingredients = this.shoppingListService.getIngredients();
     this.shoppingListService.ingredientsChanged.subscribe((ing) => (this.ingredients = ing));
   }
+
+  /**
+   * Avvia edit di un ingrediente
+   * @param index indice ingrediente nella lista ingredienti
+   */
+  onEdit(index: number) {
+    this.shoppingListService.startedEditing.next(index);
+  }
 }
