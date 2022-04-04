@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 /**
  * Conponente Lista ricette
@@ -11,11 +12,16 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './recipe-list.component.html',
   styleUrls: ['./recipe-list.component.css'],
 })
-export class RecipeListComponent implements OnInit {
+export class RecipeListComponent implements OnInit, OnDestroy {
   /**
    * Lista ricette
    */
   recipes: Recipe[];
+
+  /**
+   * Sottoscrizione evento cambio ricetta
+   */
+  subscription: Subscription;
 
   /**
    * Costruttore
@@ -28,7 +34,15 @@ export class RecipeListComponent implements OnInit {
    * Hook init componente
    */
   ngOnInit(): void {
+    this.subscription = this.recipeService.recipesChanged.subscribe((recipes) => (this.recipes = recipes));
     this.recipes = this.recipeService.getRecipies();
+  }
+
+  /**
+   * Hook destroy componente
+   */
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   /**

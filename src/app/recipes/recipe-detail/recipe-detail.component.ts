@@ -37,6 +37,7 @@ export class RecipeDetailComponent implements OnInit {
 
   toShoppingList() {
     this.recipeService.addIngredientToShoppingList(this.recipe.ingredients);
+    this.route.navigate(['/shopping-list']);
   }
 
   /**
@@ -44,5 +45,13 @@ export class RecipeDetailComponent implements OnInit {
    */
   public onEditRecipe() {
     this.route.navigate(['edit'], { relativeTo: this.activedRoute });
+  }
+
+  /**
+   * Cancella una ricetta
+   */
+  public onDeleteRecipe() {
+    this.recipeService.deleteRecipeByIndex(this.recipe.id);
+    this.route.navigate(['/recipes']);
   }
 }

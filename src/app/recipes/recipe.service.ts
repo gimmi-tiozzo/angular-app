@@ -3,6 +3,7 @@ import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { Recipe } from './recipe.model';
 import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
 
 /**
  * Servizio per la gestione delle ricette
@@ -30,11 +31,18 @@ export class RecipeService {
   ];
 
   /**
+   * Subject che indica l'aggiunta o modifica di una ricetta
+   */
+  public recipesChanged: Subject<Recipe[]>;
+
+  /**
    * Costruttore
    * @param shoppingListService servizio per la gestione della shopping list
    * @param route corrente
    */
-  public constructor(private shoppingListService: ShoppingListService, private activatedRouter: ActivatedRoute) {}
+  public constructor(private shoppingListService: ShoppingListService, private activatedRouter: ActivatedRoute) {
+    this.recipesChanged = new Subject<Recipe[]>();
+  }
 
   /**
    * Ottieni una shallow copy della lista delle ricette
@@ -42,6 +50,25 @@ export class RecipeService {
    */
   public getRecipies(): Recipe[] {
     return this.recipes.slice();
+  }
+
+  /**
+   * Aggiungi una nuova ricetta
+   * @param recipe ricetta
+   */
+  public addRecipe(recipe: Recipe) {
+    this.recipes.push(recipe);
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  /**
+   * Aggiorna un ricetta alla posizione index
+   * @param index indice ricetta
+   * @param newRecipe ricetta da aggiornare
+   */
+  public updateRecipeByIndex(index: number, newRecipe: Recipe) {
+    this.recipes[index] = newRecipe;
+    this.recipesChanged.next(this.recipes.slice());
   }
 
   /**
@@ -59,5 +86,14 @@ export class RecipeService {
    */
   public addIngredientToShoppingList(ingredients: Ingredient[]) {
     this.shoppingListService.addIngredients(ingredients);
+  }
+
+  /**
+   * Cancella una ricetta in base alla posizione index
+   * @param index indice ricetta
+   */
+  public deleteRecipeByIndex(index: number) {
+    this.recipes.splice(index, 1);
+    this.recipesChanged.next(this.recipes.slice());
   }
 }
