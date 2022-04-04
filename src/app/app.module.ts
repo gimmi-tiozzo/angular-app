@@ -16,6 +16,8 @@ import { AppRoutingModule } from './app-rounting.module';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { RecipeService } from './recipes/recipe.service';
+import { HttpClientModule } from '@angular/common/http';
+import { RecipesResolverService } from './recipes/recipes-resolver.service';
 
 /**
  * Modulo root
@@ -34,8 +36,8 @@ import { RecipeService } from './recipes/recipe.service';
     ShoppingEditComponent,
     DropdownDirective,
   ],
-  imports: [BrowserModule, FormsModule, ReactiveFormsModule, AppRoutingModule],
-  providers: [ShoppingListService, RecipeService],
+  imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, AppRoutingModule],
+  providers: [ShoppingListService, RecipeService, RecipesResolverService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
