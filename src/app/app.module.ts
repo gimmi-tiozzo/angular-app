@@ -16,8 +16,12 @@ import { AppRoutingModule } from './app-rounting.module';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { RecipeService } from './recipes/recipe.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RecipesResolverService } from './recipes/recipes-resolver.service';
+import { AuthComponent } from './auth/auth.component';
+import { ConfigData } from './shared/config.data';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+import { AuthInterceptor } from './auth/auth-interceptor.service';
 
 /**
  * Modulo root
@@ -35,9 +39,19 @@ import { RecipesResolverService } from './recipes/recipes-resolver.service';
     ShoppingListComponent,
     ShoppingEditComponent,
     DropdownDirective,
+    AuthComponent,
+    LoadingSpinnerComponent,
   ],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, AppRoutingModule],
-  providers: [ShoppingListService, RecipeService, RecipesResolverService],
+  providers: [
+    ShoppingListService,
+    RecipeService,
+    RecipesResolverService,
+    { provide: 'ApiRestEndpoint', useValue: ConfigData.ApiRestEndpoint },
+    { provide: 'SignInApiRestEndpoint', useValue: ConfigData.SignInApiRestEndpoint },
+    { provide: 'SignUpApiRestEndpoint', useValue: ConfigData.SignUpApiRestEndpoint },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
