@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { AlertComponent } from '../shared/alert/alert.component';
+import { PlaceholderDirective } from '../shared/placeholder/placeholder.directive';
 import { AuthResponseData } from './auth-response-data.type';
 import { AuthService } from './auth.service';
 
@@ -13,7 +15,7 @@ import { AuthService } from './auth.service';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css'],
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
   /**
    * Indica se siamo in modalità login o sign up
    */
@@ -30,11 +32,23 @@ export class AuthComponent implements OnInit {
   error: string;
 
   /**
+   * Sottoscrizione evento close div errore
+   */
+  alertSubscription: Subscription;
+
+  /**
+   * Primo elemento DOM che usa la direttiva PlaceholderDirective
+   */
+  @ViewChild(PlaceholderDirective)
+  alertHost: PlaceholderDirective;
+
+  /**
    * Costruttore
    * @param authService Servizio di autenticazione
    * @param router router di navigazione
+   * @param componentFactoryResolver Factory per la creazione di componenti
    */
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) {
     this.isLoginMode = true;
     this.isLoading = false;
     this.error = null;
@@ -44,6 +58,15 @@ export class AuthComponent implements OnInit {
    * Hook init componente
    */
   ngOnInit(): void {}
+
+  /**
+   * Hook destroy componente
+   */
+  ngOnDestroy(): void {
+    if (this.alertSubscription) {
+      this.alertSubscription.unsubscribe();
+    }
+  }
 
   /**
    * Esegui lo switch tra login mode e sign up mode
@@ -73,16 +96,45 @@ export class AuthComponent implements OnInit {
     }
 
     authObservable.subscribe({
-      next: (resData) => {
+      next: (_resData) => {
         this.isLoading = false;
         this.error = null;
       },
       error: (error) => {
         this.error = error.message;
+        this.showErrorAlert(error.message);
         this.isLoading = false;
       },
     });
 
     this.router.navigate(['/recipes']);
+  }
+
+  /**
+   * Gestisci erroe di login/signup
+   */
+  onHandleError() {
+    this.error = null;
+  }
+
+  /**
+   * Visualizza un div modale di errore
+   * @param errorMessage Messaggio di errore
+   */
+  showErrorAlert(errorMessage: string): void {
+    const viewContainerRef = this.alertHost.viewContainerRef;
+    viewContainerRef.clear();
+
+    //questa è la vecchia versione che usa le  factory:
+    // const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+    // viewContainerRef.createComponent(alertCmpFactory);
+
+    const alertCmp = viewContainerRef.createComponent(AlertComponent);
+    alertCmp.instance.message = errorMessage;
+    this.alertSubscription = alertCmp.instance.close.subscribe(() => {
+      this.alertSubscription.unsubscribe();
+      this.alertSubscription = null;
+      viewContainerRef.clear();
+    });
   }
 }

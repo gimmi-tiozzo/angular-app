@@ -22,6 +22,8 @@ import { AuthComponent } from './auth/auth.component';
 import { ConfigData } from './shared/config.data';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { AuthInterceptor } from './auth/auth-interceptor.service';
+import { AlertComponent } from './shared/alert/alert.component';
+import { PlaceholderDirective } from './shared/placeholder/placeholder.directive';
 
 /**
  * Modulo root
@@ -41,6 +43,8 @@ import { AuthInterceptor } from './auth/auth-interceptor.service';
     DropdownDirective,
     AuthComponent,
     LoadingSpinnerComponent,
+    AlertComponent,
+    PlaceholderDirective,
   ],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, AppRoutingModule],
   providers: [
