@@ -99,6 +99,8 @@ export class AuthComponent implements OnInit, OnDestroy {
       next: (_resData) => {
         this.isLoading = false;
         this.error = null;
+
+        this.router.navigate(['/recipes']);
       },
       error: (error) => {
         this.error = error.message;
@@ -106,8 +108,6 @@ export class AuthComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       },
     });
-
-    this.router.navigate(['/recipes']);
   }
 
   /**

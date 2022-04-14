@@ -17,9 +17,8 @@ export class DataStorageService {
    * Costruttore
    * @param http servizio client http
    * @param recipeService servizio per la gestione delle ricette
-   * @param authService servizio di autenticazione
    */
-  constructor(private http: HttpClient, private recipeService: RecipeService, @Inject('ApiRestEndpoint') private apiRestEndpoint: string, private authService: AuthService) {}
+  constructor(private http: HttpClient, private recipeService: RecipeService, @Inject('ApiRestEndpoint') private apiRestEndpoint: string) {}
 
   /**
    * Salva le ricette

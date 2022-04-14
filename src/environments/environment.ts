@@ -2,8 +2,22 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+/**
+ * Variabili di ambiente
+ */
 export const environment = {
-  production: false
+  /**
+   * Prod mode
+   */
+  production: false,
+  /**
+   * Chiave firebase
+   */
+  apiKey: 'xxx',
+  /**
+   * Url API Firebase
+   */
+  apiUrl: 'xxx',
 };
 
 /*
